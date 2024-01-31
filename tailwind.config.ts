@@ -16,9 +16,11 @@ const config: Config = {
         50: '#fee2e2'
       },
       white: colors.white,
+      black: colors.black,
       gray: colors.gray,
+      red: colors.red,
       'fire': '#ff9e55',
-      grass: '#63bc5b',
+      'grass': '#63bc5b',
       'electric': '#f4d23b',
       'water': '#5090d6',
       'ground': '#d97845',
@@ -32,7 +34,8 @@ const config: Config = {
       'normal': '#919aa2',
       'dark': '#745c4c',
       'ghost': '#5369ad',
-      'ice': '#73cec0'
+      'ice': '#73cec0',
+      'fairy': '#ED8FE6'
     },
     extend: {
       backgroundImage: {

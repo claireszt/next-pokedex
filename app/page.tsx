@@ -1,4 +1,3 @@
-
 import { Metadata } from 'next';
 import PokemonCard from './pokemon-list/pokemonCard';
 import "./ui/global.css";
@@ -8,7 +7,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const pokemonIds = Array.from({ length: 1 }, (_, index) => index + 1);
+  const pokemonIds = Array.from({ length: 151 }, (_, index) => index + 1);
 
   return (
     <main>
