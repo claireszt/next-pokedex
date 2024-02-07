@@ -20,13 +20,11 @@ export function TypePill({ type, size }) {
         fairy: 'bg-fairy',
       };
 
-      const bgStyle = `rounded-full ${typeColorMap[type]} px-1 inline-block w-16`;
+      const bgStyle = `rounded-md ${typeColorMap[type]} px-2 py-1 inline-block`
 
       return (
-          <>
-              <div className={`${bgStyle}`}>
-                  <p className="text-white text-sm text-center">{type.toString()}</p>
-              </div>
-          </>
+        <div className={`${bgStyle}`}>
+            <p className="text-black text-[0.6rem] text-center font-bold">{type.toString().toUpperCase()}</p>
+        </div>
       );
   }

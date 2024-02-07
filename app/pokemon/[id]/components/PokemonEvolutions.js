@@ -27,7 +27,7 @@ function PokemonEvolutions({ id }) {
 
   return (
     <div className="flex">
-      {evolutionChain && evolutionChain.evolves_to.length > 0 ? (
+      {evolutionChain ? (
         <>
           <div className="flex items-center space-x-4">
             <Link href={`/pokemon/${evolutionChain.species.id}`}>

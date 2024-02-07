@@ -1,3 +1,20 @@
+// const fetchAllPokemons = async () => {
+//   const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0')
+
+//   if (!response.ok) {
+//     throw new Error(`Failed to fetch all Pokemons. Status: ${response.status}`);
+//   }
+
+//   const data = await response.json();
+//   const pokemonIds = data.results;
+//   const ids = pokemonIds.map(pokemon => {
+//       const urlParts = pokemon.url.split('/');
+//       return parseInt(urlParts[urlParts.length - 2]); // Extract the last number in the URL
+//   });
+//   ids.sort((a, b) => a - b);
+//   return ids; 
+// }
+
 const fetchPokemonData = async (id) => {
   const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
 
@@ -35,5 +52,17 @@ const fetchEvoChain = async (id) => {
   return data;
 };
 
+const fetchByGen = async (id) => {
+  const response = await fetch(`https://pokeapi.co/api/v2/generation/${id}`);
+  const data = await response.json();
+  const pokemonSpecies = data.pokemon_species;
+  const ids = pokemonSpecies.map(pokemon => {
+      const urlParts = pokemon.url.split('/');
+      return parseInt(urlParts[urlParts.length - 2]); // Extract the last number in the URL
+  });
+  ids.sort((a, b) => a - b);
+  return ids;
+}
 
-export { fetchPokemonData, fetchSpeciesData, fetchEvoChain };
+
+export { fetchPokemonData, fetchSpeciesData, fetchEvoChain, fetchByGen };

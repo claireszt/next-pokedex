@@ -44,14 +44,13 @@ async function formatEvolutionChain(id) {
   const formatTriggerName = (triggerName) => {
     const formattedName = triggerName.replace(/-/g, ' '); // Replace dashes with spaces
     const words = formattedName.split(' ');
-  
+
     const capitalizedWords = words.map((word) => {
       return word.charAt(0).toUpperCase() + word.slice(1);
     });
-  
+
     return capitalizedWords.join(' ');
   };
-  
 
   const formattedChain = {
     species: {
@@ -87,36 +86,68 @@ async function formatEvolutionChain(id) {
 
   function getTriggerInfo(detail) {
     const triggerInfo = {};
-  
+
     switch (detail.trigger.name) {
       case 'level-up':
-        if (detail.level !== null) triggerInfo.trigger = 'Level '+detail.min_level;
-        if (detail.min_happiness !== null) triggerInfo.trigger = 'Happiness +'+detail.min_happiness;
+        if (detail.min_level !== null) triggerInfo.trigger = `Level ${detail.min_level}`;
+        if (detail.min_happiness !== null) triggerInfo.trigger = `Happiness +${detail.min_happiness}`;
         if (detail.relative_physical_stats !== null) {
-          if (detail.relative_physical_stats == 0) triggerInfo.trigger = `Level ${detail.min_level}, Atk = Def`
-          if (detail.relative_physical_stats == 1) triggerInfo.trigger = `Level ${detail.min_level}, Atk > Def`
-          if (detail.relative_physical_stats == -1) triggerInfo.trigger = `Level ${detail.min_level}, Atk < Def`
+          if (detail.relative_physical_stats === 0) triggerInfo.trigger = `Level ${detail.min_level}, Atk = Def`;
+          if (detail.relative_physical_stats === 1) triggerInfo.trigger = `Level ${detail.min_level}, Atk > Def`;
+          if (detail.relative_physical_stats === -1) triggerInfo.trigger = `Level ${detail.min_level}, Atk < Def`;
         }
         break;
       case 'use-item':
         if (detail.item?.name) triggerInfo.trigger = formatTriggerName(detail.item.name);
         break;
       case 'trade':
-        triggerInfo.trigger = 'Trade'
-      // Add more cases for other trigger types as needed
-  
+        triggerInfo.trigger = 'Trade';
+        break;
+
       default:
         break;
     }
-  
+
     return triggerInfo;
   }
-  
 
   processEvolutions(evoData.chain);
   console.log('Formatted Evolution Data:', formattedChain);
 
   return formattedChain;
 }
+
+const formatAllPokemons = async () => {
+  try {
+    // Fetch all Pokémon IDs
+    const allPokemons = await fetchAllPokemons();
+
+    // Map over the array of IDs and format each Pokémon
+    const formattedPokemons = await Promise.all(
+      allPokemons.map(async (id) => {
+        try {
+          // Format the Pokémon using formatPokemon function
+          const formattedPokemon = await formatPokemon(id);
+          return formattedPokemon;
+        } catch (error) {
+          console.error(`Error formatting Pokémon with ID ${id}:`, error);
+          // Return null for the Pokémon if formatting fails
+          return null;
+        }
+      })
+    );
+
+    // Filter out any null values (Pokémon that failed to format)
+    const filteredFormattedPokemons = formattedPokemons.filter((pokemon) => pokemon !== null);
+
+    console.log('Formatted All Pokémon Data:', filteredFormattedPokemons);
+    return filteredFormattedPokemons;
+  } catch (error) {
+    console.error('Error formatting all Pokémon data:', error);
+    throw error; // Re-throw the error to propagate it further
+  }
+};
+
+
 
 export { formatPokemon, formatEvolutionChain };

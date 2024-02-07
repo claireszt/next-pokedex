@@ -21,6 +21,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/pokemon/[id]/page.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/pokemon/[id]/page.jsx", "app/pokemon-list/PokemonList.jsx", "app/page.jsx"],
   "exclude": ["node_modules"]
 }
