@@ -2,6 +2,8 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import PokemonCard from './pokemonCard';
 import Loading from '../loading';
+import FilterGenerationComponent from './filters/FilterGenerationComponent'
+import { fetchByGen } from '@/backend/fetch';
 
 const PokemonList = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -9,28 +11,34 @@ const PokemonList = () => {
   const [offset, setOffset] = useState(0);
   const [count, setCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [generationFilter, setGenerationFilter] = useState('');
 
   useEffect(() => {
     fetchPokemonData(currentPage);
-  }, [currentPage]);
+  }, [currentPage, generationFilter]); // Include generationFilter in the dependency array
 
   const fetchPokemonData = async (page) => {
+    setIsLoading(true);
     try {
-      setIsLoading(true); // Set loading state to true while fetching data
-      const offsetValue = (page - 1) * 9;
-      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/?offset=${offsetValue}&limit=9`);
-      const data = await response.json();
-      const ids = data.results.map((pokemon, index) => {
-        return offsetValue + index + 1; // Calculate ID based on page and index
-      });
-      setPokemonIds(ids);
-      setOffset(offsetValue);
-      setCount(data.count);
+      const pokemonIds = await fetchByGen(generationFilter);
+      
+      // Divide the array of Pokémon IDs into pages of 9 IDs each
+      const offsetStart = (page - 1) * 9;
+      const offsetEnd = offsetStart + 9;
+      const slicedPokemonIds = pokemonIds.slice(offsetStart, offsetEnd);
+  
+      setPokemonIds(slicedPokemonIds);
+      setCount(pokemonIds.length);
     } catch (error) {
       console.error('Error fetching Pokémon data:', error);
     } finally {
-      setIsLoading(false); // Set loading state to false after fetching data
+      setIsLoading(false);
     }
+  };
+
+  const handleGenerationChange = (selectedGeneration) => {
+    setCurrentPage(1); // Reset currentPage when generation filter changes
+    setGenerationFilter(selectedGeneration);
   };
 
   const handleNextPage = () => {
@@ -45,13 +53,18 @@ const PokemonList = () => {
 
   return (
     <div>
-      <Suspense fallback={<Loading/>}>
+      <div>
+        {/* Filter components */}
+        <FilterGenerationComponent onGenerationChange={handleGenerationChange} />
+        {/* You can add more filter components here */}
+      </div>
+      <Suspense fallback={<Loading />}>
         {isLoading ? (
           <Loading />
         ) : (
           <div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
-              {pokemonIds.map(id => (
+              {pokemonIds.map((id) => (
                 <PokemonCard key={id} id={id} />
               ))}
             </div>
@@ -59,14 +72,12 @@ const PokemonList = () => {
             <div className="flex justify-center mt-4">
               <button
                 onClick={handlePreviousPage}
-                disabled={currentPage === 1 || offset === 0}
                 className="mx-1 px-2 py-1 border border-gray-300 rounded-md bg-gray-100"
               >
                 Previous
               </button>
               <button
                 onClick={handleNextPage}
-                disabled={offset >= count}
                 className="mx-1 px-2 py-1 border border-gray-300 rounded-md bg-gray-100"
               >
                 Next

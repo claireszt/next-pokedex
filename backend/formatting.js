@@ -117,37 +117,6 @@ async function formatEvolutionChain(id) {
   return formattedChain;
 }
 
-const formatAllPokemons = async () => {
-  try {
-    // Fetch all Pokémon IDs
-    const allPokemons = await fetchAllPokemons();
-
-    // Map over the array of IDs and format each Pokémon
-    const formattedPokemons = await Promise.all(
-      allPokemons.map(async (id) => {
-        try {
-          // Format the Pokémon using formatPokemon function
-          const formattedPokemon = await formatPokemon(id);
-          return formattedPokemon;
-        } catch (error) {
-          console.error(`Error formatting Pokémon with ID ${id}:`, error);
-          // Return null for the Pokémon if formatting fails
-          return null;
-        }
-      })
-    );
-
-    // Filter out any null values (Pokémon that failed to format)
-    const filteredFormattedPokemons = formattedPokemons.filter((pokemon) => pokemon !== null);
-
-    console.log('Formatted All Pokémon Data:', filteredFormattedPokemons);
-    return filteredFormattedPokemons;
-  } catch (error) {
-    console.error('Error formatting all Pokémon data:', error);
-    throw error; // Re-throw the error to propagate it further
-  }
-};
-
 
 
 export { formatPokemon, formatEvolutionChain };
