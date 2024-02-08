@@ -1,19 +1,19 @@
-// const fetchAllPokemons = async () => {
-//   const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0')
+const fetchAllPokemons = async () => {
+  const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0')
 
-//   if (!response.ok) {
-//     throw new Error(`Failed to fetch all Pokemons. Status: ${response.status}`);
-//   }
+  if (!response.ok) {
+    throw new Error(`Failed to fetch all Pokemons. Status: ${response.status}`);
+  }
 
-//   const data = await response.json();
-//   const pokemonIds = data.results;
-//   const ids = pokemonIds.map(pokemon => {
-//       const urlParts = pokemon.url.split('/');
-//       return parseInt(urlParts[urlParts.length - 2]); // Extract the last number in the URL
-//   });
-//   ids.sort((a, b) => a - b);
-//   return ids; 
-// }
+  const data = await response.json();
+  const pokemonIds = data.results;
+  const ids = pokemonIds.map(pokemon => {
+      const urlParts = pokemon.url.split('/');
+      return parseInt(urlParts[urlParts.length - 2]); // Extract the last number in the URL
+  });
+  ids.sort((a, b) => a - b);
+  return ids; 
+}
 
 const fetchPokemonData = async (id) => {
   const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
@@ -64,5 +64,27 @@ const fetchByGen = async (id) => {
   return ids;
 }
 
+const fetchByType = async (type) => {
+  try {
+    const response = await fetch(`https://pokeapi.co/api/v2/type/${type}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch data');
+    }
+    const data = await response.json();
+    const nestedPokemon = data.pokemon; // Array of objects with "pokemon" property
+    const pokemonSpecies = nestedPokemon.map(entry => entry.pokemon); // Extracting "pokemon" object from each entry
+    const ids = pokemonSpecies.map(poke => {
+      const urlParts = poke.url.split('/');
+      return parseInt(urlParts[urlParts.length - 2]); // Extract the last number in the URL
+    });
+    ids.sort((a, b) => a - b);
+    return ids;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return [];
+  }
+}
 
-export { fetchPokemonData, fetchSpeciesData, fetchEvoChain, fetchByGen };
+
+
+export { fetchAllPokemons, fetchPokemonData, fetchSpeciesData, fetchEvoChain, fetchByGen, fetchByType };

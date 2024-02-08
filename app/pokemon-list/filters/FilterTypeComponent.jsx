@@ -22,7 +22,7 @@ const FilterTypeComponent = ({ onTypeChange }) => {
         <option value="fire">Fire</option>
         <option value="water">Water</option>
         <option value="grass">Grass</option>
-        {/* Add more options for other types */}
+
       </select>
     </div>
   );
