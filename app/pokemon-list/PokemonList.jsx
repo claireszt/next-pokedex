@@ -4,6 +4,7 @@ import PokemonCard from './pokemonCard';
 import Loading from '../loading';
 import RegionFilter from './filters/RegionFilter';
 import TypeFilter from './filters/TypeFilter';
+import SortingFilter from './filters/SortingFilter'; // Corrected import statement
 import { fetchAllPokemons, fetchByGen, fetchByType } from '@/backend/fetch'; // Update the path accordingly
 
 const PokemonList = () => {
@@ -13,10 +14,11 @@ const PokemonList = () => {
   const [count, setCount] = useState(0);
   const [regionFilter, setRegionFilter] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
+  const [sorting, setSorting] = useState('#'); // State for selected sorting option
 
   useEffect(() => {
     fetchPokemonData(currentPage);
-  }, [currentPage, regionFilter, typeFilter]);
+  }, [currentPage, regionFilter, typeFilter, sorting]);
 
   const fetchPokemonData = async (page) => {
     setIsLoading(true);
@@ -24,16 +26,17 @@ const PokemonList = () => {
       let pokemonIds = [];
 
       if (regionFilter && !typeFilter) {
-        pokemonIds = await fetchByGen(regionFilter);
+        pokemonIds = await fetchByGen(regionFilter, sorting);
       } else if (!regionFilter && typeFilter) {
-        pokemonIds = await fetchByType(typeFilter);
+        pokemonIds = await fetchByType(typeFilter, sorting);
       } else if (regionFilter && typeFilter) {
-        const regionPokemonIds = await fetchByGen(regionFilter);
-        const typePokemonIds = await fetchByType(typeFilter);
+        const regionPokemonIds = await fetchByGen(regionFilter, sorting);
+        const typePokemonIds = await fetchByType(typeFilter, sorting);
         // Find the intersection of Pokémon IDs from both filters
         pokemonIds = regionPokemonIds.filter((id) => typePokemonIds.includes(id));
       } else {
-        pokemonIds = await fetchAllPokemons();
+        // Fetch all Pokémon IDs with sorting
+        pokemonIds = await fetchAllPokemons(sorting);
       }
 
       const offsetStart = (page - 1) * 9;
@@ -49,21 +52,30 @@ const PokemonList = () => {
     }
   };
 
+  // Handle sorting change
+  const handleSortChange = (selectedSort) => {
+    setCurrentPage(1);
+    setSorting(selectedSort);
+  };
 
+  // Handle region change
   const handleRegionChange = (selectedRegion) => {
     setCurrentPage(1);
     setRegionFilter(selectedRegion);
   };
 
+  // Handle type change
   const handleTypeChange = (selectedType) => {
     setCurrentPage(1);
     setTypeFilter(selectedType);
   };
 
+  // Handle reset
   const handleReset = () => {
-    setCurrentPage(1); // Reset the page to the first page
-    setRegionFilter(''); // Reset region filter
-    setTypeFilter(''); // Reset type filter
+    setCurrentPage(1);
+    setRegionFilter('');
+    setTypeFilter('');
+    setSorting('#');
   };
 
   return (
@@ -76,6 +88,10 @@ const PokemonList = () => {
         <TypeFilter
           selectedType={typeFilter}
           onTypeChange={handleTypeChange}
+        />
+        <SortingFilter
+          selectedSort={sorting}
+          onSortChange={handleSortChange}
         />
         <button
           onClick={handleReset}

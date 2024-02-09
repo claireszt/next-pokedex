@@ -19,6 +19,7 @@ const config: Config = {
       black: colors.black,
       gray: colors.gray,
       red: colors.red,
+      blue: colors.blue,
       'fire': '#ffb166',
       'grass': '#8fd49d',
       'electric': '#f9e65c',

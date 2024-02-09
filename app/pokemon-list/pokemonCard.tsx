@@ -23,8 +23,8 @@ async function PokemonCard({ id }: PokemonCardProps): Promise<React.ReactElement
           <p className='text-gray-500 font-mono text-xs font-bold'>#{pokemon.id.toString().padStart(3, "0")}</p>
           <p className='font-bold text-xl'>{pokemon.name}</p>
           <div className='space-x-1'>
-            <TypePill type={pokemon.type1} size={undefined}/> 
-            {pokemon.type2 ? <TypePill type={pokemon.type2} size={undefined}/> : null}
+            <TypePill type={pokemon.type1} size={'sm'}/> 
+            {pokemon.type2 ? <TypePill type={pokemon.type2} size={'sm'}/> : null}
           </div>
         </div>
       </Link>

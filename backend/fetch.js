@@ -1,4 +1,4 @@
-const fetchAllPokemons = async () => {
+const fetchAllPokemons = async ( sort ) => {
   const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0')
 
   if (!response.ok) {
@@ -6,13 +6,23 @@ const fetchAllPokemons = async () => {
   }
 
   const data = await response.json();
-  const pokemonIds = data.results;
-  const ids = pokemonIds.map(pokemon => {
-      const urlParts = pokemon.url.split('/');
-      return parseInt(urlParts[urlParts.length - 2]); // Extract the last number in the URL
-  });
-  ids.sort((a, b) => a - b);
-  return ids; 
+
+  if (sort == 'abc') {
+    const pokemonNames = data.results;
+    const names = pokemonNames.map(pokemon => pokemon.name)
+    return names.sort()
+  }
+
+  if (sort == '#') {
+    const pokemonIds = data.results;
+    const ids = pokemonIds.map(pokemon => {
+        const urlParts = pokemon.url.split('/');
+        return parseInt(urlParts[urlParts.length - 2]); // Extract the last number in the URL
+    });
+    ids.sort((a, b) => a - b);
+  
+    return ids; 
+  }
 }
 
 const fetchPokemonData = async (id) => {
@@ -52,33 +62,55 @@ const fetchEvoChain = async (id) => {
   return data;
 };
 
-const fetchByGen = async (id) => {
+const fetchByGen = async (id, sort) => {
   const response = await fetch(`https://pokeapi.co/api/v2/generation/${id}`);
   const data = await response.json();
+
   const pokemonSpecies = data.pokemon_species;
-  const ids = pokemonSpecies.map(pokemon => {
-      const urlParts = pokemon.url.split('/');
-      return parseInt(urlParts[urlParts.length - 2]); // Extract the last number in the URL
-  });
-  ids.sort((a, b) => a - b);
-  return ids;
+
+  if (sort == 'abc') {
+    const names = pokemonSpecies.map(pokemon => pokemon.name)
+    return names.sort()
+  }
+
+  if (sort == '#') {
+    const ids = pokemonSpecies.map(pokemon => {
+        const urlParts = pokemon.url.split('/');
+        return parseInt(urlParts[urlParts.length - 2]); // Extract the last number in the URL
+    });
+    ids.sort((a, b) => a - b);
+    return ids;
+  }
+
 }
 
-const fetchByType = async (type) => {
+const fetchByType = async (type, sort) => {
   try {
     const response = await fetch(`https://pokeapi.co/api/v2/type/${type}`);
     if (!response.ok) {
       throw new Error('Failed to fetch data');
     }
+
     const data = await response.json();
-    const nestedPokemon = data.pokemon; // Array of objects with "pokemon" property
-    const pokemonSpecies = nestedPokemon.map(entry => entry.pokemon); // Extracting "pokemon" object from each entry
-    const ids = pokemonSpecies.map(poke => {
-      const urlParts = poke.url.split('/');
-      return parseInt(urlParts[urlParts.length - 2]); // Extract the last number in the URL
-    });
-    ids.sort((a, b) => a - b);
-    return ids;
+    const nestedPokemon = data.pokemon; 
+
+    if (sort == 'abc') {
+      const names = nestedPokemon.map(entry => entry.pokemon.name); // Extracting "pokemon" object from each entry
+      return names.sort()
+    }
+  
+    if (sort == '#') {
+      const pokemonSpecies = nestedPokemon.map(entry => entry.pokemon); // Extracting "pokemon" object from each entry
+      const ids = pokemonSpecies.map(poke => {
+        const urlParts = poke.url.split('/');
+        return parseInt(urlParts[urlParts.length - 2]); // Extract the last number in the URL
+      });
+      ids.sort((a, b) => a - b);
+      return ids;
+    }
+
+
+
   } catch (error) {
     console.error('Error fetching data:', error);
     return [];

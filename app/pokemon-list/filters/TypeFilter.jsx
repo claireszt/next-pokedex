@@ -38,8 +38,8 @@ function TypeFilter({ selectedType, onTypeChange }) {
               onChange={(e) => onTypeChange(e.target.value)}
               className="hidden"
             />
-            <label htmlFor={type.value} className={`cursor-pointer`}>
-              <TypePill type={type.value} size="sm" />
+            <label htmlFor={type.value} className="cursor-pointer">
+              <TypePill type={type.value} size={type.value === selectedType ? 'md' : 'sm'}/>
             </label>
           </div>
         ))}
