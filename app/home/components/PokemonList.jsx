@@ -1,20 +1,35 @@
 'use client'
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, Suspense, useCallback } from 'react';
 import PokemonCard from './pokemonCard';
 import Loading from '../loading';
 import RegionFilter from './filters/RegionFilter';
 import TypeFilter from './filters/TypeFilter';
 import SortingFilter from './filters/SortingFilter'; // Corrected import statement
 import { fetchAllPokemons, fetchByGen, fetchByType } from '@/backend/fetch'; // Update the path accordingly
+import { usePathname, useSearchParams, useRouter } from 'next/navigation'; // Import usePathname, useSearchParams, and useRouter from next/navigation
 
 const PokemonList = () => {
+  const router = useRouter(); // Access the router object
+  const pathname = usePathname()
+  const searchParams = useSearchParams(); // Access the search parameters
+
   const [currentPage, setCurrentPage] = useState(1);
   const [pokemonIds, setPokemonIds] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [count, setCount] = useState(0);
-  const [regionFilter, setRegionFilter] = useState('');
-  const [typeFilter, setTypeFilter] = useState('');
-  const [sorting, setSorting] = useState('#'); // State for selected sorting option
+  const [regionFilter, setRegionFilter] = useState(searchParams.get('region') || '');
+  const [typeFilter, setTypeFilter] = useState(searchParams.get('type') || '');
+  const [sorting, setSorting] = useState(searchParams.get('sort') || '#'); 
+
+  const createQueryString = useCallback(
+    (name, value) => {
+      const params = new URLSearchParams(searchParams)
+      params.set(name, value)
+ 
+      return params.toString()
+    },
+    [searchParams]
+  )
 
   useEffect(() => {
     fetchPokemonData(currentPage);
@@ -52,22 +67,23 @@ const PokemonList = () => {
     }
   };
 
-  // Handle sorting change
-  const handleSortChange = (selectedSort) => {
-    setCurrentPage(1);
-    setSorting(selectedSort);
-  };
-
-  // Handle region change
   const handleRegionChange = (selectedRegion) => {
-    setCurrentPage(1);
     setRegionFilter(selectedRegion);
+    // Update URL with selected region
+    router.push(pathname + '?' + createQueryString('region', selectedRegion))
+    console.log(selectedRegion)
   };
-
-  // Handle type change
+  
   const handleTypeChange = (selectedType) => {
-    setCurrentPage(1);
     setTypeFilter(selectedType);
+    // Update URL with selected type
+    router.push(pathname + '?' + createQueryString('type', selectedType))
+  };
+  
+  const handleSortChange = (selectedSort) => {
+    setSorting(selectedSort);
+    // Update URL with selected sorting
+    router.push(pathname + '?' + createQueryString('sort', selectedSort))
   };
 
   // Handle reset
@@ -76,6 +92,7 @@ const PokemonList = () => {
     setRegionFilter('');
     setTypeFilter('');
     setSorting('#');
+    router.push('/home')
   };
 
   return (

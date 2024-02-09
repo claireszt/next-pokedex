@@ -1,7 +1,8 @@
 import React from 'react';
-import { TypePill } from '../../ui/type-pills';
+import { TypePill } from '../../../ui/type-pills';
 
 function TypeFilter({ selectedType, onTypeChange }) {
+
   const types = [
     { label: 'Fire', value: 'fire' },
     { label: 'Water', value: 'water' },
@@ -23,6 +24,11 @@ function TypeFilter({ selectedType, onTypeChange }) {
     { label: 'Steel', value: 'steel' }
   ];
 
+  // Function to handle type change and update URL
+  const handleTypeChange = (type) => {
+    onTypeChange(type);
+  };
+
   return (
     <div>
       <label className="block text-gray-700 text-sm font-bold mb-2">Type</label>
@@ -35,11 +41,11 @@ function TypeFilter({ selectedType, onTypeChange }) {
               name="type"
               value={type.value}
               checked={type.value === selectedType}
-              onChange={(e) => onTypeChange(e.target.value)}
+              onChange={() => handleTypeChange(type.value)} // Call handleTypeChange when type changes
               className="hidden"
             />
             <label htmlFor={type.value} className="cursor-pointer">
-              <TypePill type={type.value} size={type.value === selectedType ? 'md' : 'sm'}/>
+              <TypePill type={type.value} size={type.value === selectedType ? 'md' : 'sm'} />
             </label>
           </div>
         ))}

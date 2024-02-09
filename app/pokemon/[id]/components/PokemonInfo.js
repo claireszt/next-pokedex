@@ -1,4 +1,5 @@
 // PokemonInfo.js
+'use client'
 import { useEffect, useState } from 'react';
 import { formatPokemon } from '@/backend/formatting';
 import Image from 'next/image';

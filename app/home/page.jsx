@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
-import PokemonList from '../pokemon-list/PokemonList'
-import Loading from '../loading'
+import PokemonList from './components/PokemonList'
+import Loading from './loading'
  
 export default function Page() {
   return (

@@ -1,4 +1,5 @@
 // PokemonEvolutions.js
+'use client'
 import { useEffect, useState } from 'react';
 import { formatEvolutionChain } from '@/backend/formatting';
 import PokemonInfo from './PokemonInfo';

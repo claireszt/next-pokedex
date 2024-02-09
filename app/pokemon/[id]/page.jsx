@@ -1,19 +1,25 @@
 // Page.js
 'use client'
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import PokemonInfo from './components/PokemonInfo'
 import PokemonEvolutions from './components/PokemonEvolutions'
-import Link from 'next/link';
-// import { useEffect } from 'react';
+import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 
 export default function Page() {
+  const router = useRouter(); // Access the router object
   const pathname = usePathname();
   const pathnameParts = pathname.split('/');
   const id = pathnameParts[pathnameParts.length - 1];
 
+  const handleGoBack = () => {
+    router.back(); // Navigate back to the previous route
+  };
+
   return (
     <div>
-      <Link href='/'>HOME</Link>
+      <button onClick={handleGoBack}>
+        <ArrowLeftIcon className="w-4 h-4 inline-block align-middle mr-1"/> BACK
+      </button>
       <h1>__</h1>
       <PokemonInfo id={id} />
       <h1>__</h1>

@@ -3,7 +3,7 @@ import {formatPokemon} from '@/backend/formatting';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { TypePill } from '../ui/type-pills';
+import { TypePill } from '../../ui/type-pills';
 
 interface PokemonCardProps {
   id: number;
