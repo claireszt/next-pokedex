@@ -35,7 +35,8 @@ const config: Config = {
       'dark': '#957b6e',
       'ghost': '#8493c7',
       'ice': '#9bd3c8',
-      'fairy': '#f5addc'
+      'fairy': '#f5addc',
+      'steel': '#c8d0d8'
     },
     extend: {
       backgroundImage: {

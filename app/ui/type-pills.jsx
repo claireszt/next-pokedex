@@ -18,6 +18,7 @@ export function TypePill({ type, size }) {
         dark: 'bg-dark',
         steel: 'bg-steel',
         fairy: 'bg-fairy',
+        steel: 'bg-steel'
       };
 
       const bgStyle = `rounded-md ${typeColorMap[type]} px-2 py-1 inline-block`
