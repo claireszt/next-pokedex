@@ -2,7 +2,7 @@
 'use client'
 import { useEffect, useState } from 'react';
 import { formatEvolutionChain } from '@/backend/formatting';
-import PokemonInfo from './PokemonInfo';
+import PokemonInfo from '../ui/PokemonInfo';
 import { ArrowLongRightIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 
@@ -27,7 +27,7 @@ function PokemonEvolutions({ id }) {
   };
 
   return (
-    <div className="flex">
+    <div className='flex'>
       {evolutionChain ? (
         <>
           <div className="flex items-center space-x-4">

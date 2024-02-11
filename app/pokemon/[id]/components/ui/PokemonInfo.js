@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { formatPokemon } from '@/backend/formatting';
 import Image from 'next/image';
 
-import { TypePill } from "../../../ui/type-pills"
+import { TypePill } from "../../../../ui/type-pills"
 
 function PokemonInfo({ id }) {
   const [pokemon, setPokemon] = useState(null);
@@ -37,9 +37,9 @@ function PokemonInfo({ id }) {
               width={imageSize}
               height={imageSize}
             />
-          <TypePill type={pokemon.type1} size={7} />
+          <TypePill type={pokemon.type1} size={'md'} />
           {pokemon.type2 ? (
-              <TypePill type={pokemon.type2} size={2}/>
+              <TypePill type={pokemon.type2} size={'md'}/>
           ) : <p></p>
           }
         </>
