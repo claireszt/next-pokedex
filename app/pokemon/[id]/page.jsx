@@ -1,10 +1,10 @@
 'use client'
 import React, { useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import PokemonInfo from './components/ui/PokemonInfo';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 import { ToggleCategory } from './components/ui/Button';
 import CategoryContent from './components/categories/CategoryContent'
+import PokemonDetails from './components/PokemonDetails'
 
 export default function Page() {
   const router = useRouter();
@@ -47,7 +47,7 @@ export default function Page() {
       </button>
       <div className='grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 justify-center'>
         <div className='flex justify-center'>
-        <PokemonInfo id={id} />
+        <PokemonDetails id={id} />
         </div>
       <div className='flex flex-col'>
       {Object.entries(categories).map(([category, isOpen]) => (

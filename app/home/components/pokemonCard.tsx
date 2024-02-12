@@ -19,7 +19,7 @@ async function PokemonCard({ id }: PokemonCardProps): Promise<React.ReactElement
   return (
       <Link href={`/pokemon/${pokemon.id}`}>
         <div className={divStyle}>
-          <Image src={pokemon.sprite['official']} alt={`${pokemon.name} sprite`} width={imageSize} height={imageSize} priority={true}/>
+          <Image src={pokemon.sprite['3d']} alt={`${pokemon.name} sprite`} width={imageSize} height={imageSize} priority={true}/>
           <p className='text-gray-500 font-mono text-xs font-bold'>#{pokemon.id.toString().padStart(3, "0")}</p>
           <p className='font-bold text-xl'>{pokemon.name}</p>
           <div className='space-x-1'>

@@ -1,8 +1,9 @@
-import { fetchPokemonData, fetchEvoChain } from "./fetch";
+import { fetchPokemonData, fetchEvoChain, fetchSpeciesData } from "./fetch";
 
 const formatPokemon = async (id) => {
   try {
     const pokemonData = await fetchPokemonData(id);
+    const speciesData = await fetchSpeciesData(id)
 
   const pokemonName =
     pokemonData.name[0].toUpperCase() +
@@ -10,6 +11,16 @@ const formatPokemon = async (id) => {
 
   const type1 = pokemonData.types[0]?.type?.name || null;
   const type2 = pokemonData.types[1]?.type?.name || null;
+
+  const getGenus = (lang) => {
+    const genusEntry = speciesData.genera.find((entry) => entry.language.name === lang);
+    return genusEntry ? genusEntry.genus : null;
+  };
+
+  const getPokedexEntry = (lang) => {
+    const pokedexEntry = speciesData['flavor_text_entries'].find((entry) => entry.language.name === lang);
+    return pokedexEntry ? pokedexEntry['flavor_text'] : null;
+  };
 
   const formattedData = {
     id: pokemonData.id,
@@ -22,7 +33,9 @@ const formatPokemon = async (id) => {
       '3d': pokemonData.sprites.other['home'].front_default,
     },
     type1: type1,
-    type2: type2
+    type2: type2,
+    genera: getGenus('en'),
+    pokedexEntry: getPokedexEntry('en')
   };
 
   console.log('Formatted Pokemon Data:', formattedData);

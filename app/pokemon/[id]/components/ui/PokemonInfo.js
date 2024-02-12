@@ -32,16 +32,18 @@ function PokemonInfo({ id }) {
           <p>#{pokemon.id.toString().padStart(3, '0')}</p>
           <p>{pokemon.name}</p>
           <Image
-              src={pokemon.sprite['official']}
+              src={pokemon.sprite['3d']}
               alt={`${pokemon.name} sprite`}
               width={imageSize}
               height={imageSize}
             />
-          <TypePill type={pokemon.type1} size={'md'} />
+                    <div className='flex flex-row gap-2 pt-3'>
+          <TypePill type={pokemon.type1} size={'sm'} />
           {pokemon.type2 ? (
-              <TypePill type={pokemon.type2} size={'md'}/>
+              <TypePill type={pokemon.type2} size={'sm'}/>
           ) : <p></p>
           }
+          </div>
         </>
       ) : (
         <p>Loading Pokemon info...</p>

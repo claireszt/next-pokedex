@@ -38,11 +38,12 @@ const fetchPokemonData = async (id) => {
 };
 
 const fetchSpeciesData = async (id) => {
-  const response = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`);
+  const pokemonData = await fetchPokemonData(id);
+  const url = pokemonData.species.url;
+  const response = await fetch(url);
 
-  // Vérifie si la réponse est réussie (statut 200)
   if (!response.ok) {
-    throw new Error(`Failed to fetch Species data. Status: ${response.status}`);
+    throw new Error(`Failed to fetch Evolution Chain data. Status: ${response.status}`);
   }
 
   const data = await response.json();
