@@ -10,7 +10,7 @@ function PokemonAbilities({ pokemon }) {
             <div className="font-bold  w-full text-center">{ability.name.toUpperCase()}
             {ability.isHidden ? <span className="text-[0.6rem] text-gray-500 pl-1 font-normal">(hidden)</span> : <span></span>}
             </div>
-            <p className="mt-1 rounded-md bg-gray-200 p-2 text-sm text-center">{ability.effect}</p>
+            <p className={`mt-1 rounded-md bg-${pokemon.type1} bg-opacity-20 p-2 text-sm text-center`}>{ability.effect}</p>
           </div>
         ))
       ) : (

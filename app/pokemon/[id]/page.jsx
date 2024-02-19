@@ -68,7 +68,7 @@ export default function Page() {
             <PokemonAbilities pokemon={pokemon}/>
           </div>
         </div>) : (
-          <p></p>
+          <p>Loading...</p>
         )}
       </div>
     </div>

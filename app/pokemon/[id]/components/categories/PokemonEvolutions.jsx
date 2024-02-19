@@ -15,7 +15,7 @@ function PokemonEvolutions({ pokemon, evolutionChain }) {
         <>
           <div className="flex items-center space-x-4">
             <Link href={`/pokemon/${evolutionChain.species.id}`}>
-              <div className={`flex items-center space-x-4 p-4 text-center border-2 ${isCurrentPage(evolutionChain.species.id) ? `border-${pokemon.type1} rounded-full` : 'bg-white'}`}>
+              <div className={`flex items-center space-x-4 p-4 text-center border-2 ${isCurrentPage(evolutionChain.species.id) ? `border-gray-200 rounded-full` : 'border-white'}`}>
                 <PokemonInfo pokemon={evolutionChain.species}/>
               </div>
             </Link>
@@ -23,11 +23,11 @@ function PokemonEvolutions({ pokemon, evolutionChain }) {
 
           {evolutionChain.evolves_to.map((evolution, index) => (
             <div key={index} className="flex items-center px-4 space-x-4">
-              <div className='px-3 rounded-md bg-gray-200'>
+              <div className={`px-3 rounded-md bg-${pokemon.type1} bg-opacity-20`}>
                 <p className='text-xs font-bold text-gray-900'>{evolution.trigger.trigger}</p>
               </div>
               <Link href={`/pokemon/${evolution.evolves_to.id}`}>
-                <div className={`flex items-center space-x-4 p-2 text-center ${isCurrentPage(evolution.evolves_to.id) ? `bg-${pokemon.type1} bg-opacity-50 rounded-full` : 'bg-white'}`}>
+                <div className={`flex items-center space-x-4 p-2 text-center border-2 ${isCurrentPage(evolution.evolves_to.id) ? `border-gray-200 rounded-full` : 'border-white'}`}>
                   <PokemonInfo pokemon={evolution.evolves_to}/>
                 </div>
               </Link>

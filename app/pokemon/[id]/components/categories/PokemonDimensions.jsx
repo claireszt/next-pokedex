@@ -18,7 +18,7 @@ function PokemonDimensions({ pokemon, titleStyle }) {
             <div className={thisTitleStyle}>
               <GiWeight size={iconSize} style={iconStyle} /> WEIGHT
             </div>
-            <div className='mt-2 px-3 rounded-md bg-gray-200'>
+            <div className={`mt-2 px-3 rounded-md bg-${pokemon.type1} bg-opacity-20`}>
             <p className='font-bold text-gray-900'>{pokemon.weight/10} kg</p>
             </div>
 
@@ -27,7 +27,7 @@ function PokemonDimensions({ pokemon, titleStyle }) {
           <div className={thisTitleStyle}>
               <GiBodyHeight size={iconSize} style={iconStyle} /> HEIGHT
             </div>
-            <div className='mt-2 px-3 rounded-md bg-gray-200'>
+            <div className={`mt-2 px-3 rounded-md bg-${pokemon.type1} bg-opacity-20`}>
             <p className=' font-bold text-gray-900'>{pokemon.height/10} kg</p>
             </div>
 
