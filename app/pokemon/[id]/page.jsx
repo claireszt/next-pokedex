@@ -7,6 +7,7 @@ import { formatPokemonFull, formatEvolutionChain, formatPokemonSimple } from '@/
 
 import PokemonEvolutions from './components/categories/PokemonEvolutions';
 import PokemonAbilities from './components/categories/PokemonAbilities';
+import PokemonDimensions from './components/categories/PokemonDimensions'
 
 function ToggleCategory({ onClick, category, title }) {
   return (
@@ -53,6 +54,10 @@ export default function Page() {
     {
       name: 'abilities',
       component: <PokemonAbilities pokemon={pokemon}/>
+    },
+    {
+      name: 'dimensions',
+      component: <PokemonDimensions pokemon={pokemon}/>
     }
   ];
 

@@ -60,7 +60,7 @@ const formatPokemonFull = async (id) => {
     const formattedAbilities = await Promise.all(abilities.map(async ability => {
       const urlParts = ability.ability.url.split('/');
       const id = parseInt(urlParts[urlParts.length - 2]);
-      const name = ability.ability.name;
+      const name = ability.ability.name.replace(/-/g, ' ').replace(/^\w/, c => c.toUpperCase());;
       const isHidden = ability.is_hidden;
   
       // Fetch specific information for the ability
