@@ -3,14 +3,14 @@
 
 function PokemonAbilities({ pokemon }) {
   return (
-    <div className="flex flex-row space-x-4 w-full">
+    <div className="flex flex-row py-4 space-x-4 w-full">
       {pokemon ? (
         pokemon.abilities.map((ability, index) => (
           <div key={index} className={`${getAbilityContainerClass(pokemon.abilities.length)} flex flex-col align-center items-center justify-start`}>
-            <div className="font-bold border-b border-gray-500 w-full text-center">{ability.name.toUpperCase()}
+            <div className="font-bold  w-full text-center">{ability.name.toUpperCase()}
             {ability.isHidden ? <span className="text-[0.6rem] text-gray-500 pl-1 font-normal">(hidden)</span> : <span></span>}
             </div>
-            <p className="px-2 pt-2 text-sm text-center">{ability.effect}</p>
+            <p className="mt-1 rounded-md bg-gray-200 p-2 text-sm text-center">{ability.effect}</p>
           </div>
         ))
       ) : (

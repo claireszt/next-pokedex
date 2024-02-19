@@ -99,7 +99,9 @@ const formatPokemonFull = async (id) => {
     type2: type2,
     genera: getGenus('en'),
     pokedexEntry: getPokedexEntry('en'),
-    abilities: await formatAbilities(pokemonData.abilities)
+    abilities: await formatAbilities(pokemonData.abilities),
+    weight: pokemonData.weight,
+    height: pokemonData.height
   };
 
   console.log('Formatted Pokemon Data:', formattedData);
@@ -172,12 +174,12 @@ async function formatEvolutionChain(id) {
 
     switch (detail.trigger.name) {
       case 'level-up':
-        if (detail.min_level !== null) triggerInfo.trigger = `Level ${detail.min_level}`;
+        if (detail.min_level !== null) triggerInfo.trigger = `LVL ${detail.min_level}`;
         if (detail.min_happiness !== null) triggerInfo.trigger = `Happiness +${detail.min_happiness}`;
         if (detail.relative_physical_stats !== null) {
-          if (detail.relative_physical_stats === 0) triggerInfo.trigger = `Level ${detail.min_level}, Atk = Def`;
-          if (detail.relative_physical_stats === 1) triggerInfo.trigger = `Level ${detail.min_level}, Atk > Def`;
-          if (detail.relative_physical_stats === -1) triggerInfo.trigger = `Level ${detail.min_level}, Atk < Def`;
+          if (detail.relative_physical_stats === 0) triggerInfo.trigger = `LVL ${detail.min_level}, Atk = Def`;
+          if (detail.relative_physical_stats === 1) triggerInfo.trigger = `LVL ${detail.min_level}, Atk > Def`;
+          if (detail.relative_physical_stats === -1) triggerInfo.trigger = `LVL ${detail.min_level}, Atk < Def`;
         }
         break;
       case 'use-item':
@@ -194,11 +196,12 @@ async function formatEvolutionChain(id) {
     return triggerInfo;
   }
 
-  processEvolutions(evoData.chain);
+  await processEvolutions(evoData.chain); // Wait for processing all evolutions
   console.log('Formatted Evolution Data:', formattedChain);
 
   return formattedChain;
 }
+
 
 
 
