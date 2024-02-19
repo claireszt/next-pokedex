@@ -118,6 +118,17 @@ const fetchByType = async (type, sort) => {
   }
 }
 
+async function fetchAbilityData(id) {
+  const response = await fetch(`https://pokeapi.co/api/v2/ability/${id}`);
+
+  // Vérifie si la réponse est réussie (statut 200)
+  if (!response.ok) {
+    throw new Error(`Failed to fetch Ability data. Status: ${response.status}`);
+  }
+
+  const data = await response.json();
+  return data;
+}
 
 
-export { fetchAllPokemons, fetchPokemonData, fetchSpeciesData, fetchEvoChain, fetchByGen, fetchByType };
+export { fetchAllPokemons, fetchPokemonData, fetchSpeciesData, fetchEvoChain, fetchByGen, fetchByType, fetchAbilityData };

@@ -1,43 +1,63 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { ArrowLeftIcon } from '@heroicons/react/24/outline';
-import { ToggleCategory } from './components/ui/Button';
-import CategoryContent from './components/categories/CategoryContent'
-import PokemonDetails from './components/PokemonDetails'
+import { ArrowLeftIcon, ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
+import PokemonDetails from './components/PokemonDetails';
+import { formatPokemonFull, formatEvolutionChain, formatPokemonSimple } from '@/backend/formatting';
+
+import PokemonEvolutions from './components/categories/PokemonEvolutions';
+import PokemonAbilities from './components/categories/PokemonAbilities';
+
+function ToggleCategory({ onClick, category, title }) {
+  return (
+    <button onClick={onClick} className="bg-gray-200 flex items-center justify-center">
+      <span className="mr-2">{title}</span>
+      {category ? <ChevronUpIcon className="w-5 h-5" /> : <ChevronDownIcon className="w-5 h-5" />}
+    </button>
+  );
+}
 
 export default function Page() {
   const router = useRouter();
   const pathname = usePathname();
-  const pathnameParts = pathname.split('/');
-  const id = pathnameParts[pathnameParts.length - 1];
+  const id = parseInt(pathname.split("/").pop());
 
-  const [categories, setCategories] = useState({
-    evolutions: false,
-    abilities: false,
-    dimensions: false,
-    moves: false,
-    stats: false
-    
-    // Add more categories here if needed
-  });
+  const [pokemon, setPokemon] = useState(null);
+  const [evolutionChain, setEvolutionChain] = useState(null);
+  const [activeCategory, setActiveCategory] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const formattedPokemon = await formatPokemonFull(id);
+        setPokemon(formattedPokemon);
+        const formattedEvolutionChain = await formatEvolutionChain(id);
+        setEvolutionChain(formattedEvolutionChain);
+      } catch (error) {
+        console.error('Error fetching Pokemon details:', error);
+      }
+    };
+  
+    fetchData();
+  }, [id]);
 
   const handleGoBack = () => {
     router.back();
   };
 
-  const toggleCategory = (category) => {
-    // Create a new object to hold the updated category states
-    const updatedCategories = {};
+  const categories = [
+    {
+      name: 'evolutions',
+      component: <PokemonEvolutions pokemon={pokemon} evolutionChain={evolutionChain}/>
+    },
+    {
+      name: 'abilities',
+      component: <PokemonAbilities pokemon={pokemon}/>
+    }
+  ];
 
-    // Iterate through all categories
-    Object.keys(categories).forEach((cat) => {
-      // Set the state of the current category based on whether it's the clicked category
-      updatedCategories[cat] = cat === category ? !categories[category] : false;
-    });
-
-    // Update the state with the new category states
-    setCategories(updatedCategories);
+  const toggleCategory = (categoryName) => {
+    setActiveCategory(categoryName === activeCategory ? null : categoryName);
   };
 
   return (
@@ -47,23 +67,22 @@ export default function Page() {
       </button>
       <div className='grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 justify-center'>
         <div className='flex justify-center'>
-        <PokemonDetails id={id} />
+          <PokemonDetails pokemon={pokemon} />
         </div>
-      <div className='flex flex-col'>
-      {Object.entries(categories).map(([category, isOpen]) => (
-        <React.Fragment key={category}>
-          <ToggleCategory
-            onClick={() => toggleCategory(category)}
-            category={isOpen}
-            title={category.toUpperCase()}
-          />
-                <div className="flex justify-center pb-5">
-          {isOpen && <CategoryContent category={category} id={id} />}
-          </div>
-
-        </React.Fragment>
-      ))}
-      </div>
+        <div className='flex flex-col'>
+          {categories.map((category, index) => (
+            <React.Fragment key={index}>
+              <ToggleCategory
+                category={category.name === activeCategory}
+                title={category.name.toUpperCase()}
+                onClick={() => toggleCategory(category.name)}
+              />
+              <div className='py-3 flex align-center items-center justify-center'>
+                {category.name === activeCategory && category.component}
+              </div>
+            </React.Fragment>
+          ))}
+        </div>
       </div>
     </div>
   );

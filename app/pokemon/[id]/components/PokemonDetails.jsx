@@ -1,7 +1,6 @@
 // PokemonInfo.js
 'use client'
-import React, { useEffect, useState } from 'react';
-import { formatPokemon } from '@/backend/formatting';
+import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
@@ -9,22 +8,8 @@ import { TypePill } from "../../../ui/type-pills"
 import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 
 
-function PokemonDetails({ id }) {
+function PokemonDetails({ pokemon }) {
     const router = useRouter()
-    const [pokemon, setPokemon] = useState(null);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const formattedPokemon = await formatPokemon(id);
-                setPokemon(formattedPokemon);
-            } catch (error) {
-                console.error('Error fetching Pokemon data:', error);
-            }
-        };
-
-        fetchData();
-    }, [id]);
 
     const imageSize = 300;
 
@@ -49,6 +34,7 @@ function PokemonDetails({ id }) {
                         alt={`${pokemon.name} sprite`}
                         width={imageSize}
                         height={imageSize}
+                        priority={true}
                     />
                     <p className='font-mono font-bold text-sm text-gray-700'>#{pokemon.id.toString().padStart(3, '0')}</p>
                     <p className='text-5xl font-bold'>{pokemon.name}</p>

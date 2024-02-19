@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import { fetchAllPokemons, fetchPokemonData } from '@/backend/fetch'; // Import your fetch function
-import { formatPokemon } from '@/backend/formatting';
+import { formatPokemonSimple } from '@/backend/formatting';
 import { IdentificationIcon } from '@heroicons/react/24/outline';
 
 export default function Page() {
@@ -13,7 +13,7 @@ export default function Page() {
 
     useEffect(() => {
         for (let id = 1; id <= 9; id++) {
-            formatPokemon(id)
+            formatPokemonSimple(id)
         }
     }, []);
 

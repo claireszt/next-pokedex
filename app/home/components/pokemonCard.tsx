@@ -1,5 +1,5 @@
 import React from 'react';
-import {formatPokemon} from '@/backend/formatting';
+import {formatPokemonSimple} from '@/backend/formatting';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -10,7 +10,7 @@ interface PokemonCardProps {
 }
 
 async function PokemonCard({ id }: PokemonCardProps): Promise<React.ReactElement> {
-  const pokemon = await formatPokemon(id)
+  const pokemon = await formatPokemonSimple(id)
 
   const imageSize = 80
 

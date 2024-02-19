@@ -1,9 +1,43 @@
-import { fetchPokemonData, fetchEvoChain, fetchSpeciesData } from "./fetch";
+import { fetchPokemonData, fetchEvoChain, fetchSpeciesData, fetchAbilityData } from "./fetch";
 
-const formatPokemon = async (id) => {
+const formatPokemonSimple = async (id) => {
+  try {
+    const pokemonData = await fetchPokemonData(id);
+
+  const pokemonName =
+    pokemonData.name[0].toUpperCase() +
+    pokemonData.name.slice(1).toLowerCase();
+
+  const type1 = pokemonData.types[0]?.type?.name || null;
+  const type2 = pokemonData.types[1]?.type?.name || null;
+
+  const formattedData = {
+    id: pokemonData.id,
+    name: pokemonName,
+    sprite: {
+      official: pokemonData.sprites.other['official-artwork'].front_default,
+      small: pokemonData.sprites['front_default'],
+      dreamworld: pokemonData.sprites.other['dream_world'].front_default,
+      gif: pokemonData.sprites.other['showdown'].front_default,
+      '3d': pokemonData.sprites.other['home'].front_default,
+    },
+    type1: type1,
+    type2: type2,
+  };
+
+  console.log('Formatted Pokemon Data:', formattedData);
+    return formattedData;
+  } catch (error) {
+    console.error('Error formatting Pokemon data:', error);
+    throw error; // Re-throw the error to propagate it further
+  }
+};
+
+const formatPokemonFull = async (id) => {
   try {
     const pokemonData = await fetchPokemonData(id);
     const speciesData = await fetchSpeciesData(id)
+    
 
   const pokemonName =
     pokemonData.name[0].toUpperCase() +
@@ -22,6 +56,35 @@ const formatPokemon = async (id) => {
     return pokedexEntry ? pokedexEntry['flavor_text'] : null;
   };
 
+  async function formatAbilities(abilities) {
+    const formattedAbilities = await Promise.all(abilities.map(async ability => {
+      const urlParts = ability.ability.url.split('/');
+      const id = parseInt(urlParts[urlParts.length - 2]);
+      const name = ability.ability.name;
+      const isHidden = ability.is_hidden;
+  
+      // Fetch specific information for the ability
+      const additionalData = await fetchAbilityData(id);
+
+      const effectEntry = (lang) => {
+        const effectEntry = additionalData.flavor_text_entries.find((entry) => entry.language.name === lang);
+        return effectEntry ? effectEntry['flavor_text'] : null;
+      };
+  
+      // Extract only the required information from additionalData
+      const effect = effectEntry('en')
+  
+      return {
+        id,
+        name,
+        isHidden,
+        effect,
+      };
+    }));
+  
+    return formattedAbilities;
+  }
+
   const formattedData = {
     id: pokemonData.id,
     name: pokemonName,
@@ -35,7 +98,8 @@ const formatPokemon = async (id) => {
     type1: type1,
     type2: type2,
     genera: getGenus('en'),
-    pokedexEntry: getPokedexEntry('en')
+    pokedexEntry: getPokedexEntry('en'),
+    abilities: await formatAbilities(pokemonData.abilities)
   };
 
   console.log('Formatted Pokemon Data:', formattedData);
@@ -65,17 +129,22 @@ async function formatEvolutionChain(id) {
     return capitalizedWords.join(' ');
   };
 
+  const initialPokeData = await formatPokemonSimple(extractIdFromUrl(evoData.chain.species.url))
+
   const formattedChain = {
     species: {
-      name: evoData.chain.species.name,
       id: extractIdFromUrl(evoData.chain.species.url),
+      ...initialPokeData
     },
     evolves_to: [],
   };
 
-  function processEvolutions(evolutionData) {
-    const evolutionDetails = evolutionData.evolution_details.map((detail) => {
+  async function processEvolutions(evolutionData) {
+    const evolutionDetails = await Promise.all(evolutionData.evolves_to.map(async (evolution) => {
+      const detail = evolution.evolution_details[0];
       const triggerInfo = getTriggerInfo(detail);
+      const pokemonInfo = await formatPokemonSimple(extractIdFromUrl(evolution.species.url));
+  
       return {
         trigger: {
           name: formatTriggerName(detail.trigger.name),
@@ -84,18 +153,19 @@ async function formatEvolutionChain(id) {
         evolves_to: {
           name: evolutionData.species.name,
           id: extractIdFromUrl(evolutionData.species.url),
+          ...pokemonInfo, // Add additional info fetched from fetchPokemonSimple
         },
       };
-    });
-
+    }));
+  
     formattedChain.evolves_to.push(...evolutionDetails);
-
+  
     if (evolutionData.evolves_to.length > 0) {
-      evolutionData.evolves_to.forEach((nextEvolution) => {
-        processEvolutions(nextEvolution);
-      });
+      await Promise.all(evolutionData.evolves_to.map(async (nextEvolution) => {
+        await processEvolutions(nextEvolution);
+      }));
     }
-  }
+  }  
 
   function getTriggerInfo(detail) {
     const triggerInfo = {};
@@ -132,4 +202,6 @@ async function formatEvolutionChain(id) {
 
 
 
-export { formatPokemon, formatEvolutionChain };
+
+
+export { formatPokemonSimple, formatPokemonFull, formatEvolutionChain };
