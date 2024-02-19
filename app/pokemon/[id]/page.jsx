@@ -1,9 +1,10 @@
 'use client'
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 import PokemonDetails from './components/PokemonDetails';
 import { formatPokemonFull, formatEvolutionChain, formatPokemonSimple } from '@/backend/formatting';
+import Loading from './loading'
 
 import PokemonEvolutions from './components/categories/PokemonEvolutions';
 import PokemonAbilities from './components/categories/PokemonAbilities';
@@ -55,7 +56,7 @@ export default function Page() {
           <PokemonDetails pokemon={pokemon} />
         </div>
         {pokemon && evolutionChain ? (
-        <div className='flex flex-col '>
+        <div className='flex flex-col'>
           <div className={bgStyle}>
             <h2 className={titleStyle}>EVOLUTIONS</h2>
             <PokemonEvolutions pokemon={pokemon} evolutionChain={evolutionChain}/>
@@ -68,7 +69,9 @@ export default function Page() {
             <PokemonAbilities pokemon={pokemon}/>
           </div>
         </div>) : (
-          <p>Loading...</p>
+                <div className={bgStyle}>
+        <p>Loading Pokemon info...</p>
+          </div>
         )}
       </div>
     </div>

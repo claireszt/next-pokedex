@@ -15,7 +15,7 @@ function PokemonEvolutions({ pokemon, evolutionChain }) {
         <>
           <div className="flex items-center space-x-4">
             <Link href={`/pokemon/${evolutionChain.species.id}`}>
-              <div className={`flex items-center space-x-4 p-4 text-center border-2 ${isCurrentPage(evolutionChain.species.id) ? `border-gray-200 rounded-full` : 'border-white'}`}>
+              <div className={`flex items-center space-x-4 p-4 text-center border-2 ${isCurrentPage(evolutionChain.species.id) ? `border-gray-200 rounded-full` : 'border-transparent'}`}>
                 <PokemonInfo pokemon={evolutionChain.species}/>
               </div>
             </Link>
@@ -27,7 +27,7 @@ function PokemonEvolutions({ pokemon, evolutionChain }) {
                 <p className='text-xs font-bold text-gray-900'>{evolution.trigger.trigger}</p>
               </div>
               <Link href={`/pokemon/${evolution.evolves_to.id}`}>
-                <div className={`flex items-center space-x-4 p-2 text-center border-2 ${isCurrentPage(evolution.evolves_to.id) ? `border-gray-200 rounded-full` : 'border-white'}`}>
+                <div className={`flex items-center space-x-4 p-2 text-center border-2 ${isCurrentPage(evolution.evolves_to.id) ? `border-gray-200 rounded-full` : 'border-transparent'}`}>
                   <PokemonInfo pokemon={evolution.evolves_to}/>
                 </div>
               </Link>
