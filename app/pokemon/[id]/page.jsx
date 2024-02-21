@@ -8,7 +8,8 @@ import Loading from './loading'
 
 import PokemonEvolutions from './components/categories/PokemonEvolutions';
 import PokemonAbilities from './components/categories/PokemonAbilities';
-import PokemonDimensions from './components/categories/PokemonDimensions'
+import PokemonDimensions from './components/categories/PokemonDimensions';
+import PokemonStats from './components/categories/PokemonStats'
 
 export default function Page() {
   const router = useRouter();
@@ -43,8 +44,8 @@ export default function Page() {
     router.back();
   };
 
-  const bgStyle = 'bg-white rounded-md p-5 mt-5 shadow flex flex-col justify-center items-center content-center'
-  const titleStyle = 'text-xl leading-3 tracking-[0.3em]	'
+  const bgStyle = 'bg-white rounded-md p-5 mt-5 shadow flex flex-col justify-center items-center content-center gap-4'
+  const titleStyle = 'text-xl leading-3 tracking-[0.3em] font-bold'
 
   return (
     <div>
@@ -67,6 +68,10 @@ export default function Page() {
           <div className={bgStyle}>
             <h2 className={titleStyle}>ABILITIES</h2>
             <PokemonAbilities pokemon={pokemon}/>
+          </div>
+          <div className={bgStyle}>
+            <h2 className={titleStyle}>STATS</h2>
+            <PokemonStats pokemon={pokemon}/>
           </div>
         </div>) : (
                 <div className={bgStyle}>

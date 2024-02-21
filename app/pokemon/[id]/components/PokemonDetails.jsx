@@ -46,7 +46,7 @@ function PokemonDetails({ pokemon }) {
                         ) : <p></p>}
                     </div>
                     <p className='w-1/2 text-justify'>{pokemon.pokedexEntry}</p>
-                    <div className="flex justify-center mt-5">
+                    <div className="flex justify-center mt-5 gap-4">
                         <button
                             onClick={handlePreviousClick}
                             disabled={pokemon.id === 1}

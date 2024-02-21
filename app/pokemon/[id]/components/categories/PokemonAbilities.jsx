@@ -3,7 +3,7 @@
 
 function PokemonAbilities({ pokemon }) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-center py-4">
+    <div className={`grid grid-cols-1 ${getAbilityContainerClass(pokemon.abilities.length)} gap-4 justify-center py-4`}>
       {pokemon ? (
         pokemon.abilities.map((ability, index) => (
           <div key={index} className={`flex flex-col align-center items-center justify-start px-5`}>
@@ -23,13 +23,13 @@ function PokemonAbilities({ pokemon }) {
 function getAbilityContainerClass(abilityCount) {
   switch (abilityCount) {
     case 1:
-      return "w-full";
+      return "";
     case 2:
-      return "w-1/2";
+      return "sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2";
     case 3:
-      return "w-1/3";
+      return "sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3";
     default:
-      return "w-full";
+      return "";
   }
 }
 

@@ -85,6 +85,31 @@ const formatPokemonFull = async (id) => {
     return formattedAbilities;
   }
 
+  const formatStats = (stats) => {
+    const formattedStats = stats.map((stat) => {
+      const name = stat.stat.name
+      const base = stat.base_stat
+      let max = base*2+99
+      if (name == "hp") {
+        max = base*2+204
+      }
+      let shortName = 'HP'
+      if (name == "attack") {shortName = 'ATK'}
+      if (name == "defense") {shortName = 'DEF'}
+      if (name == "special-attack") {shortName = 'SpA'}
+      if (name == "special-defense") {shortName = 'SpD'}
+      if (name == "speed") {shortName = 'SPD'}
+
+      return {
+        name,
+        base,
+        max,
+        shortName
+      }
+    })
+    return formattedStats
+  }
+
   const formattedData = {
     id: pokemonData.id,
     name: pokemonName,
@@ -101,7 +126,8 @@ const formatPokemonFull = async (id) => {
     pokedexEntry: getPokedexEntry('en'),
     abilities: await formatAbilities(pokemonData.abilities),
     weight: pokemonData.weight,
-    height: pokemonData.height
+    height: pokemonData.height,
+    stats: formatStats(pokemonData.stats)
   };
 
   console.log('Formatted Pokemon Data:', formattedData);
