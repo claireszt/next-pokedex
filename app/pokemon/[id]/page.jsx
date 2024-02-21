@@ -11,6 +11,8 @@ import PokemonAbilities from './components/categories/PokemonAbilities';
 import PokemonDimensions from './components/categories/PokemonDimensions';
 import PokemonStats from './components/categories/PokemonStats'
 
+import { Title } from './components/ui/Title'
+
 export default function Page() {
   const router = useRouter();
   const pathname = usePathname();
@@ -45,7 +47,6 @@ export default function Page() {
   };
 
   const bgStyle = 'bg-white rounded-md p-5 mt-5 shadow flex flex-col justify-center items-center content-center gap-4'
-  const titleStyle = 'text-xl leading-3 tracking-[0.3em] font-bold'
 
   return (
     <div>
@@ -59,18 +60,18 @@ export default function Page() {
         {pokemon && evolutionChain ? (
         <div className='flex flex-col'>
           <div className={bgStyle}>
-            <h2 className={titleStyle}>EVOLUTIONS</h2>
+          <Title info={'evolutions'} />
             <PokemonEvolutions pokemon={pokemon} evolutionChain={evolutionChain}/>
           </div>
           <div className={bgStyle}>
-            <PokemonDimensions pokemon={pokemon} titleStyle={titleStyle}/>
+            <PokemonDimensions pokemon={pokemon}/>
           </div>
           <div className={bgStyle}>
-            <h2 className={titleStyle}>ABILITIES</h2>
+          <Title info={'abilities'} />
             <PokemonAbilities pokemon={pokemon}/>
           </div>
           <div className={bgStyle}>
-            <h2 className={titleStyle}>STATS</h2>
+          <Title info={'stats'} />
             <PokemonStats pokemon={pokemon}/>
           </div>
         </div>) : (

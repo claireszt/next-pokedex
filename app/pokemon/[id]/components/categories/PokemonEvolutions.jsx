@@ -3,31 +3,31 @@
 import PokemonInfo from '../ui/PokemonInfo';
 import Link from 'next/link';
 
+import { CategDetail } from '../ui/CategDetails';
+
 function PokemonEvolutions({ pokemon, evolutionChain }) {
 
   const isCurrentPage = (pokemonId) => {
     return pokemon.id == pokemonId;
   };
 
+  const selectedStyle = 'bg-gray-200 rounded-full'
+
   return (
-    <div className='flex'>
+    <div className='flex gap-4'>
       {evolutionChain.evolves_to.length > 0 ? (
         <>
-          <div className="flex items-center space-x-4">
-            <Link href={`/pokemon/${evolutionChain.species.id}`}>
-              <div className={`flex items-center space-x-4 p-4 text-center border-2 ${isCurrentPage(evolutionChain.species.id) ? `border-gray-200 rounded-full` : 'border-transparent'}`}>
-                <PokemonInfo pokemon={evolutionChain.species}/>
-              </div>
-            </Link>
-          </div>
-
+          <Link href={`/pokemon/${evolutionChain.species.id}`}>
+            <div className={`flex items-center space-x-4 text-center border-2 ${isCurrentPage(evolutionChain.species.id) ? selectedStyle : 'border-transparent'}`}>
+              <PokemonInfo pokemon={evolutionChain.species}/>
+            </div>
+          </Link>
+  
           {evolutionChain.evolves_to.map((evolution, index) => (
-            <div key={index} className="flex items-center px-4 space-x-4">
-              <div className={`px-3 rounded-md bg-${pokemon.type1} bg-opacity-20`}>
-                <p className='text-xs font-bold text-gray-900'>{evolution.trigger.trigger}</p>
-              </div>
+            <div key={index} className="flex items-center space-x-4">
+              <CategDetail info={evolution.trigger.trigger} color={pokemon.type1} size={'sm'} />
               <Link href={`/pokemon/${evolution.evolves_to.id}`}>
-                <div className={`flex items-center space-x-4 p-2 text-center border-2 ${isCurrentPage(evolution.evolves_to.id) ? `border-gray-200 rounded-full` : 'border-transparent'}`}>
+                <div className={`flex items-center text-center border-2 ${isCurrentPage(evolution.evolves_to.id) ? selectedStyle : 'border-transparent'}`}>
                   <PokemonInfo pokemon={evolution.evolves_to}/>
                 </div>
               </Link>
@@ -35,10 +35,12 @@ function PokemonEvolutions({ pokemon, evolutionChain }) {
           ))}
         </>
       ) : (
-        <p>Loading...</p>
+        <div>
+          <p>Loading...</p>
+        </div>
       )}
     </div>
-  );
+  );  
 }
 
 export default PokemonEvolutions;

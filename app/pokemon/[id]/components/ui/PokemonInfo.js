@@ -8,7 +8,7 @@ import { TypePill } from "../../../../ui/type-pills"
 
 function PokemonInfo({ pokemon }) {
 
-  const imageSize = 50;
+  const imageSize = 60;
 
 
   return (
@@ -16,11 +16,11 @@ function PokemonInfo({ pokemon }) {
       {pokemon ? (
         <>
           <Image
-              src={pokemon.sprite['gif']}
+              src={pokemon.sprite['small']}
               alt={`${pokemon.name} sprite`}
-              width="0"
-              height="0"
-              style={{ width: 30, height: 'auto' }}
+              width={imageSize}
+              height={imageSize}
+              priority={true}
             />
         </>
       ) : (

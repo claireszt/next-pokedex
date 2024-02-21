@@ -91,9 +91,15 @@ const PokemonList = () => {
     router.push('/home');
   };
 
+  const handleRandom = () => {
+    const randomIndex = Math.floor(Math.random() * pokemonIds.length);
+    return pokemonIds[randomIndex];
+  };
+
   return (
     <div>
       <div className="space-y-4">
+        <button onClick={handleRandom}>RANDOM</button>
         <RegionFilter selectedRegion={regionFilter} onRegionChange={handleRegionChange} />
         <TypeFilter selectedType={typeFilter} onTypeChange={handleTypeChange} />
         <SortingFilter selectedSort={sorting} onSortChange={handleSortChange} />
