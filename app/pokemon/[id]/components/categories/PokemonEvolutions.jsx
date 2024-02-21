@@ -11,7 +11,7 @@ function PokemonEvolutions({ pokemon, evolutionChain }) {
     return pokemon.id == pokemonId;
   };
 
-  const selectedStyle = 'bg-gray-200 rounded-full'
+  const selectedStyle = `border-${pokemon.type1} rounded-full`
 
   return (
     <div className='flex gap-4'>
@@ -36,7 +36,7 @@ function PokemonEvolutions({ pokemon, evolutionChain }) {
         </>
       ) : (
         <div>
-          <p>Loading...</p>
+          <p>This Pokémon has no evolution.</p>
         </div>
       )}
     </div>

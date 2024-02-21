@@ -1,19 +1,26 @@
 import { fetchPokemonData, fetchEvoChain, fetchSpeciesData, fetchAbilityData } from "./fetch";
 
+function reformatName(name) {
+  const words = name.split('-');
+  const firstWord = words[0].charAt(0).toUpperCase() + words[0].slice(1).toLowerCase();
+  if (words.length === 1) {
+    return firstWord;
+  } else {
+    const secondWord = `(${words[1].toLowerCase()})`;
+    return `${firstWord} ${secondWord}`;
+  }
+}
+
 const formatPokemonSimple = async (id) => {
   try {
     const pokemonData = await fetchPokemonData(id);
-
-  const pokemonName =
-    pokemonData.name[0].toUpperCase() +
-    pokemonData.name.slice(1).toLowerCase();
 
   const type1 = pokemonData.types[0]?.type?.name || null;
   const type2 = pokemonData.types[1]?.type?.name || null;
 
   const formattedData = {
     id: pokemonData.id,
-    name: pokemonName,
+    name: reformatName(pokemonData.name),
     sprite: {
       official: pokemonData.sprites.other['official-artwork'].front_default,
       small: pokemonData.sprites['front_default'],
@@ -38,14 +45,9 @@ const formatPokemonFull = async (id) => {
     const pokemonData = await fetchPokemonData(id);
     const speciesData = await fetchSpeciesData(id)
     
-
-  const pokemonName =
-    pokemonData.name[0].toUpperCase() +
-    pokemonData.name.slice(1).toLowerCase();
-
-  const type1 = pokemonData.types[0]?.type?.name || null;
-  const type2 = pokemonData.types[1]?.type?.name || null;
-
+    const type1 = pokemonData.types[0]?.type?.name || null;
+    const type2 = pokemonData.types[1]?.type?.name || null;
+    
   const getGenus = (lang) => {
     const genusEntry = speciesData.genera.find((entry) => entry.language.name === lang);
     return genusEntry ? genusEntry.genus : null;
@@ -112,7 +114,7 @@ const formatPokemonFull = async (id) => {
 
   const formattedData = {
     id: pokemonData.id,
-    name: pokemonName,
+    name: reformatName(pokemonData.name),
     sprite: {
       official: pokemonData.sprites.other['official-artwork'].front_default,
       small: pokemonData.sprites['front_default'],
@@ -127,7 +129,7 @@ const formatPokemonFull = async (id) => {
     abilities: await formatAbilities(pokemonData.abilities),
     weight: pokemonData.weight,
     height: pokemonData.height,
-    stats: formatStats(pokemonData.stats)
+    stats: formatStats(pokemonData.stats),
   };
 
   console.log('Formatted Pokemon Data:', formattedData);
@@ -211,11 +213,9 @@ async function formatEvolutionChain(id) {
       case 'use-item':
         if (detail.item?.name) triggerInfo.trigger = formatTriggerName(detail.item.name);
         break;
-      case 'trade':
-        triggerInfo.trigger = 'Trade';
-        break;
 
       default:
+        triggerInfo.trigger = detail.trigger.name;
         break;
     }
 

@@ -10,6 +10,6 @@ export function CategDetail({ info, color, size, additional }) {
       textSizeClass = 'text-lg';
     }
   
-    return <p className={`rounded-lg bg-${color} bg-opacity-50 p-2 text-center ${textSizeClass} font-bold ${additional}`}>{info}</p>;
+    return <p className={`rounded-lg bg-gray-100 p-2 text-center ${textSizeClass} font-bold ${additional}`}>{info}</p>;
   }
   

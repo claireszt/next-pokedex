@@ -15,6 +15,7 @@ const PokemonList = () => {
   const searchParams = useSearchParams();
 
   const [currentPage, setCurrentPage] = useState(1);
+  const [allPokemons, setAllPokemons] = useState([])
   const [pokemonIds, setPokemonIds] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [count, setCount] = useState(0);
@@ -49,6 +50,7 @@ const PokemonList = () => {
       const offsetStart = (currentPage - 1) * 9;
       const offsetEnd = offsetStart + 9;
       const slicedPokemonIds = pokemonIds.slice(offsetStart, offsetEnd);
+      setAllPokemons(pokemonIds)
       setPokemonIds(slicedPokemonIds);
       setCount(pokemonIds.length);
     } catch (error) {
@@ -92,9 +94,10 @@ const PokemonList = () => {
   };
 
   const handleRandom = () => {
-    const randomIndex = Math.floor(Math.random() * pokemonIds.length);
-    return pokemonIds[randomIndex];
+    const randomIndex = Math.floor(Math.random() * allPokemons.length);
+    router.push(`/pokemon/${allPokemons[randomIndex]}`)
   };
+
 
   return (
     <div>

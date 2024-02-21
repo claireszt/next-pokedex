@@ -10,6 +10,7 @@ import PokemonEvolutions from './components/categories/PokemonEvolutions';
 import PokemonAbilities from './components/categories/PokemonAbilities';
 import PokemonDimensions from './components/categories/PokemonDimensions';
 import PokemonStats from './components/categories/PokemonStats'
+import PokemonMoves from './components/categories/PokemonMoves'
 
 import { Title } from './components/ui/Title'
 
@@ -46,7 +47,7 @@ export default function Page() {
     router.back();
   };
 
-  const bgStyle = 'bg-white rounded-md p-5 mt-5 shadow flex flex-col justify-center items-center content-center gap-4'
+  const bgStyle = 'bg-white rounded-md p-5 shadow flex flex-col justify-center items-center content-center gap-4'
 
   return (
     <div>
@@ -54,11 +55,11 @@ export default function Page() {
         <ArrowLeftIcon className="w-4 h-4 inline-block align-middle mr-1" /> BACK
       </button>
       <div className='grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 justify-center'>
-        <div className={bgStyle}>
+        <div className={`${bgStyle} `}>
           <PokemonDetails pokemon={pokemon} />
         </div>
         {pokemon && evolutionChain ? (
-        <div className='flex flex-col'>
+        <div className='flex flex-col gap-5'>
           <div className={bgStyle}>
           <Title info={'evolutions'} />
             <PokemonEvolutions pokemon={pokemon} evolutionChain={evolutionChain}/>
@@ -80,6 +81,14 @@ export default function Page() {
           </div>
         )}
       </div>
+      {pokemon ? (
+                <div className={`${bgStyle} mt-5`}>
+        <PokemonMoves pokemon={pokemon} />
+        </div>
+      ) : (
+        <div className={bgStyle}>
+        <p>Loading Pokemon info...</p>
+          </div>      )}
     </div>
   );
 }
