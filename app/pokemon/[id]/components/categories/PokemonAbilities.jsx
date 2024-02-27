@@ -5,7 +5,7 @@ import {CategDetail} from '../ui/CategDetails'
 function PokemonAbilities({ pokemon }) {
   
   return (
-    <div className={`grid grid-cols-1 ${getAbilityContainerClass(pokemon.abilities.length)} sm:gap-3 justify-center `}>
+    <div className={`grid grid-cols-1 ${getAbilityContainerClass(pokemon.abilities.length)} gap-10 sm:gap-3 justify-center `}>
       {pokemon ? (
         pokemon.abilities.map((ability, index) => (
           <div key={index} className={`flex flex-col align-center items-center justify-start`}>

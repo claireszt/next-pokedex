@@ -1,3 +1,5 @@
+
+
 import React from 'react';
 import { TypePill } from '../../../ui/type-pills';
 
@@ -31,10 +33,12 @@ function TypeFilter({ selectedType, onTypeChange }) {
 
   return (
     <div>
-      <label className="block text-gray-700 text-sm font-bold mb-2">Type</label>
-      <div className="flex flex-wrap">
+    <label htmlFor="types" className="text-gray-700 text-sm font-bold mb-2">
+      Types
+    </label>
+          <div className="flex flex-wrap mt-0" id="types">
         {types.map((type) => (
-          <div key={type.value} className="m-1">
+          <div key={type.value} className="space-x-1">
             <input
               type="radio"
               id={type.value}

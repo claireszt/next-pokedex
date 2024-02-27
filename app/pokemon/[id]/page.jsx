@@ -81,14 +81,14 @@ export default function Page() {
           </div>
         )}
       </div>
-      {pokemon ? (
+      {/* {pokemon ? (
                 <div className={`${bgStyle} mt-5`}>
         <PokemonMoves pokemon={pokemon} />
         </div>
       ) : (
         <div className={bgStyle}>
         <p>Loading Pokemon info...</p>
-          </div>      )}
+          </div>      )} */}
     </div>
   );
 }

@@ -101,18 +101,19 @@ const PokemonList = () => {
 
   return (
     <div>
-      <div className="space-y-4">
-        <button onClick={handleRandom}>RANDOM</button>
+      <div className="space-x-4 flex items-end">
+        {/* <button onClick={handleRandom}>RANDOM</button> */}
         <RegionFilter selectedRegion={regionFilter} onRegionChange={handleRegionChange} />
-        <TypeFilter selectedType={typeFilter} onTypeChange={handleTypeChange} />
         <SortingFilter selectedSort={sorting} onSortChange={handleSortChange} />
-        <button
+      </div>
+      <TypeFilter selectedType={typeFilter} onTypeChange={handleTypeChange} />
+      <button
           onClick={handleReset}
-          className="bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          className="mt-3 h-1/2 bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
         >
           Reset Filters
         </button>
-      </div>
+
       <Suspense fallback={<Loading />}>
         {isLoading ? (
           <Loading />
